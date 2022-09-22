@@ -1,5 +1,8 @@
 
 
+import queue
+
+
 class Graph:
 
 
@@ -73,6 +76,50 @@ class Graph:
         return False
 
 
+    def bsf(self):
+        # Breath first search
+
+        iteration = 1
+        vertices = list(self.adj_list.keys())
+        result = []
+        queue = []
+        
+        # Agregar el primer vertice a la cola 
+        queue.append(vertices[0])
+
+        while len(queue) > 0:
+            """
+                Este loop itera mientras sigan existiendo elementos 
+                en el grafo
+            """
+            
+            
+            # Quita el elemento acual de la cola y agrega a la lista de resultados
+            curr = queue.pop(0)
+
+            
+            # Checar que el nodo actual no este en result 
+            if curr not in result:
+                result.append(curr)
+            else:
+                continue
+
+            print(f"\nIteration: {iteration}")
+            print(f"C = {curr}")
+            print(f"Q = {queue}")
+            print(f"A = {result}")
+
+            # Agregar los nodos en la lista de adyacencia del nodo actual al queue
+            for adj in self.adj_list[curr]:
+                if adj not in queue:
+                    queue.append(adj)
+            
+            
+            iteration += 1
+
+        return result
+
+        
 
     def print_graph(self):
 

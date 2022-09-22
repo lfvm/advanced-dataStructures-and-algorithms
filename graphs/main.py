@@ -1,31 +1,35 @@
 from graph import Graph
-
-
-
+import csv
 g = Graph()
 
-#Agregar un elemento
-g.addVertex('C')
-g.addVertex('A')
-g.addVertex('B')
-g.addVertex('D')
-#Agregar conexiones
-g.addEdge('A','B')
-g.addEdge('C','B')
-g.addEdge('C','A')
+ 
+# Leer archivo 
+file = csv.reader(open("graph_example.txt"), delimiter='\n')
+graphData = [row for row in file]
 
-#Imprimir el grapho
+for nodeGraph in graphData:
+   
+    # Formatear string para poder acceder a los valores del grafo 
+    pairTemp = nodeGraph[0]
+    pairTemp = pairTemp.replace('(', '')
+    pairTemp = pairTemp.replace(')', '').split(',')
+    
+    # Agregamos nuevo vértice si aún no estaba
+    firstValue = int(pairTemp[0])
+    secondValue = int(pairTemp[1])
+    g.addVertex(firstValue)
+    g.addVertex(secondValue)
+    
+    # Agregar conexion entre los vertices 
+    g.addEdge(firstValue, secondValue)
+
+
+# Imprimir el grafo
 print("Grafo original")
 g.print_graph()
 
-#Eliminar conexiones
-print("Grafo despues de borrar conexiones")
-g.remove_edge('A','B')
-g.remove_edge('A','D')
-g.print_graph()
+# BFS
+print("\n")
+print("BSF")
+g.bsf()
 
-
-#Eliminar un item
-print("Grafo despues de borrar un item")
-g.remove_vertex('A')
-g.print_graph()
