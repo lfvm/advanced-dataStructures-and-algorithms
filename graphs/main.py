@@ -1,7 +1,7 @@
 from graph import Graph
 import csv
-g = Graph()
 
+g = Graph()
  
 # Leer archivo 
 file = csv.reader(open("graph_example.txt"), delimiter='\n')
@@ -30,6 +30,8 @@ g.print_graph()
 
 # BFS
 print("\n")
-print("BSF")
+print("_____________________BSF________________________________")
 g.bsf()
+print("_____________________DSF________________________________")
+g.dfs()
 

@@ -119,7 +119,48 @@ class Graph:
 
         return result
 
+    
+    def dfs(self):
+        # Depth First Search 
+        iteration = 1
+        vertices = list(self.adj_list.keys())
+        result = []
+        stack = []
         
+        # Agregar el primer vertice a la cola 
+        stack.append(vertices[0])
+
+        while len(stack) > 0:
+            """
+                Este loop itera mientras sigan existiendo elementos 
+                en el grafo
+            """
+            
+            
+            # Quita el elemento de hasta arriba de la pila
+            curr = stack.pop()
+
+            
+            # Checar que el nodo actual no este en result 
+            if curr not in result:
+                result.append(curr)
+            else:
+                continue
+
+            print(f"\nIteration: {iteration}")
+            print(f"C = {curr}")
+            print(f"STACK = {stack}")
+            print(f"A = {result}")
+
+            # Agregar los nodos en la lista de adyacencia del nodo actual al queue
+            for adj in self.adj_list[curr]:
+                if adj not in stack:
+                    stack.append(adj)
+            
+            
+            iteration += 1
+
+        return result
 
     def print_graph(self):
 
