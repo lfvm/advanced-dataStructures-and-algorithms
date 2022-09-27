@@ -129,14 +129,12 @@ class Graph:
         
         # Agregar el primer vertice a la cola 
         stack.append(vertices[0])
-
         while len(stack) > 0:
             """
                 Este loop itera mientras sigan existiendo elementos 
                 en el grafo
             """
-            
-            
+            print(f"STACK = {stack}")
             # Quita el elemento de hasta arriba de la pila
             curr = stack.pop()
 
@@ -149,12 +147,13 @@ class Graph:
 
             print(f"\nIteration: {iteration}")
             print(f"C = {curr}")
-            print(f"STACK = {stack}")
             print(f"A = {result}")
 
             # Agregar los nodos en la lista de adyacencia del nodo actual al queue
             for adj in self.adj_list[curr]:
-                if adj not in stack:
+                if adj in result:
+                    continue
+                elif adj not in stack:
                     stack.append(adj)
             
             

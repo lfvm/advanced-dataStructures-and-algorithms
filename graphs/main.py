@@ -28,10 +28,6 @@ for nodeGraph in graphData:
 print("Grafo original")
 g.print_graph()
 
-# BFS
-print("\n")
-print("_____________________BSF________________________________")
-g.bsf()
-print("_____________________DSF________________________________")
+print("_____________________DFS________________________________")
 g.dfs()
 
