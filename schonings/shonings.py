@@ -84,9 +84,12 @@ def process_clauses(clause, pos_vars, neg_vars, res_clauses):
 # Main
 if __name__ == "__main__":
 
-    # Leer archivos
-    n_vars, n_clauses, clauses = parse("04. Instance_3SAT_example.txt")
+    arch = input("Mete un archivo de entrada: ")
 
+    # Leer archivos
+    n_vars, n_clauses, clauses = parse(arch)
+
+    
     # Crear variables aleatorias
     pos_vars_array = create_random_vars(n_vars)
     neg_vars_array = create_negative_random_vars(pos_vars_array)
@@ -96,6 +99,7 @@ if __name__ == "__main__":
     res_clauses = []
     
     for i in range(3 * n_vars):
+        print("Iteración:", i, "vars_pos", pos_vars_array, "vars_neg", neg_vars_array, res_clauses)
         # Recorrer cada clausula de la matriz
         for clause in clauses:
             # Res clauses se esta pasando por referencia
@@ -111,6 +115,7 @@ if __name__ == "__main__":
                     false_clauses.append(i)
 
             #Escoger al azar entre las clausulas y los indices de esa clausula
+            print("False clauses:", false_clauses)
             rand_false_clause_index = r.choice(false_clauses)
             random_clause = clauses[rand_false_clause_index]
             random_var = r.choice(random_clause)
