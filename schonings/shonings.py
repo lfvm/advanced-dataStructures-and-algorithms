@@ -31,12 +31,12 @@ def parse(file):
 
             # Obtener cantidad de variables y clausulas de la segunda línea
             elif line_counter == 2:
-                n_vars = int(line.strip().split(" ")[2])
-                n_clauses = int(line.strip().split(" ")[3])
+                n_vars = int(line.split(" ")[2])
+                n_clauses = int(line.split(" ")[3])
 
             # Obtener información de clausulas
             else:
-                nums = map(lambda n: int(n), line.strip().split(" ")[0:3])
+                nums = map(lambda n: int(n), line.split(" ")[0:3])
                 clauses.append(list(nums))
             
             # Pasar a la siguiente línea
@@ -99,7 +99,6 @@ if __name__ == "__main__":
     res_clauses = []
     
     for i in range(3 * n_vars):
-        print("Iteración:", i, "vars_pos", pos_vars_array, "vars_neg", neg_vars_array, res_clauses)
         # Recorrer cada clausula de la matriz
         for clause in clauses:
             # Res clauses se esta pasando por referencia
@@ -115,7 +114,6 @@ if __name__ == "__main__":
                     false_clauses.append(i)
 
             #Escoger al azar entre las clausulas y los indices de esa clausula
-            print("False clauses:", false_clauses)
             rand_false_clause_index = r.choice(false_clauses)
             random_clause = clauses[rand_false_clause_index]
             random_var = r.choice(random_clause)
