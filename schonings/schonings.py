@@ -75,23 +75,47 @@ def process_clause(clause, pos_vars, neg_vars, res_clauses):
     res_clauses.append(res_clause)
     
 
+# Escribir el archivo de soluciones
 def write_file(file, init_vars, satisfied_vars, clauses, unsatisfied_arr, satisfied_arr, modified_clauses_arr, modified_var_arr, modified_vars_arr):
+    
     with(open(file, "w")) as fp:
-        fp.write("Variables Iniciales: " + init_vars+ "\n")
-        fp.write("Clausulas: " + str(clauses)+"\n")
-        if(satisfied_vars == None):
-            fp.write("No hay variables satisfactorias"+"\n")
+
+        # Resultado
+        fp.write("RESULTADO:\n")
+        if satisfied_vars == None:
+            fp.write("No se encontraron variables satisfactorias\n")
         else:
-            fp.write("Variables Satisfactorias: " + str(satisfied_vars)+"\n")
-        for i in range(len(unsatisfied_arr)):
-            fp.write("Iteración " + str(i)+"\n")
-            fp.write("Variables booleanas: " + str(modified_vars_arr[i])+"\n")
-            fp.write("Clausulas que no se satisfacen: " + str(unsatisfied_arr[i])+"\n")
-            fp.write("Clausulas que se satisfacen: " + str(satisfied_arr[i])+"\n")
-            fp.write("Clausulas que se modifican: " + str(modified_clauses_arr[i])+"\n")
-            fp.write("Variables que se modifican: " + str(modified_var_arr[i])+"\n")
-            if(i+1 < len(modified_vars_arr)):
-                fp.write("Siguientes variables booleanas: " + str(modified_vars_arr[i+1])+"\n")
+            fp.write("Variables satisfactorias: " + str(satisfied_vars) + "\n")
+
+        # Clausulas
+        fp.write("\nCLAUSULAS:\n")
+        for i in range(len(clauses)):
+            fp.write(f"{i}: {str(clauses[i])}\n")
+
+        # Variables iniciales
+        fp.write("\nVARIABLES INICIALES:\n")
+        fp.write(init_vars + "\n")
+        
+        # Imprimir datos de iteraciones
+        i = 0
+        while i < (len(unsatisfied_arr)):
+            fp.write("\nITERACION " + str(i) + "\n")
+            fp.write("Variables evaluadas: " + str(modified_vars_arr[i]) + "\n")
+            fp.write("Clausulas que se satisfacen: " + str(satisfied_arr[i]) + "\n")
+            fp.write("Clausulas que no se satisfacen: " + str(unsatisfied_arr[i]) + "\n")
+            fp.write("Clausulas aleatoria para modificar: " + str(modified_clauses_arr[i]) + "\n")
+            fp.write("Variables aleatoria para modificar: " + str(modified_var_arr[i]) + "\n")
+            if i + 1 < len(modified_vars_arr):
+                fp.write("Siguientes variables a evaluar: " + str(modified_vars_arr[i+1])+"\n")
+            
+            i += 1
+
+        if satisfied_vars != None:
+            fp.write("\nITERACION " + str(i) + "\n")
+            fp.write("Variables evaluadas: " + str(satisfied_vars) + "\n")
+            fp.write("Todas las clausulas se satisfacen")
+
+
         
 
 # Main
@@ -108,7 +132,7 @@ if __name__ == "__main__":
     init_vars = str(pos_vars_array)
     neg_vars_array = create_negative_random_vars(pos_vars_array)
 
-    # values for the final file
+    # Variables para archivo de resultados final
     unsatisfied_arr = []
     satisfied_arr = []
     modified_clauses_arr = []
@@ -117,12 +141,10 @@ if __name__ == "__main__":
 
     modified_vars_arr.append(str(init_vars))
 
-
-    # Arreglo de resultados de causulas
     res_found = False # Indicador si se ya se encontró un resultado
     res_clauses = [] # Arreglo de resultados de causulas
     
-    # Repetir 3n veces
+    # Repetir 3n veces o hasta que se encuentre el resultado
     for i in range(3 * n_vars):
 
         # Obtener los resultados de las clausulas
@@ -139,15 +161,15 @@ if __name__ == "__main__":
                 if res_clauses[i] == 0:
                     false_clauses.append(i)
 
-            # Añadir al array de write
+            # Añadir al array de clausulas que fallaron
             unsatisfied_arr.append(false_clauses)
-            newarr =[]
 
-            # Añadir al array de satisfactorias
+            # Añadir al array de clausulas satisfactorias
+            true_clauses = []
             for i in range(len(res_clauses)):
                 if res_clauses[i] == 1:
-                    newarr.append(i)
-            satisfied_arr.append(newarr)
+                    true_clauses.append(i)
+            satisfied_arr.append(true_clauses)
             
             # Escoger una clausula al azar y una de sus variables al azar
             rand_false_clause_index = r.choice(false_clauses)
@@ -159,18 +181,23 @@ if __name__ == "__main__":
             # Invertir el valor de la variable para volver a probar las clausulas
             pos_vars_array[abs(random_var) - 1] = int(not(pos_vars_array[abs(random_var) - 1]))
             neg_vars_array[abs(random_var) - 1] = int(not(neg_vars_array[abs(random_var) - 1]))
-            # añadir nuevos positivos al arr
+            
+            # Añadir siguientes variables
             modified_vars_arr.append(str(pos_vars_array))
 
             res_clauses.clear()
 
-        # Si no falló ninguna clausula imprimit resultado
+        # Si no falló ninguna clausula
         else:
+            print("--- SOLUCIÓN ---")
+            print(pos_vars_array)
             write_file("solution.txt", init_vars, pos_vars_array, clauses, unsatisfied_arr, satisfied_arr, modified_clauses_arr, modified_var_arr, modified_vars_arr)
+            res_found = True
             break
 
     
     if not res_found:
+        print("--- SIN RESULTADOS ---")
+        print("No se encontraron variables satisfactorias")
         write_file("solution.txt", init_vars, None, clauses, unsatisfied_arr, satisfied_arr, modified_clauses_arr, modified_var_arr, modified_vars_arr)
-        print("No se encontro solucion para esta secuencia, corre el algoritmo de nuevo para tratar de encontrar una solucion si esta existe")
     
