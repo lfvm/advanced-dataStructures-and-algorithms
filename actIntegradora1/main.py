@@ -5,6 +5,36 @@
 # Uriel Aguilar
 
 
+def readFileToString(path):
+    """
+    La funcion lee un archivo y guarda
+    la string completa en una variable
+    """
+    
+    with open(path, 'r') as file:
+        data = file.read()
+    
+    return data
+
+
+def writeResults(path, locArr):
+    """
+    La funcion escribe el resultado en 
+    un archivo dandole dicha ruta.
+    """
+
+    arrEmpty = len(locArr) == 0
+
+    with open(path, 'w') as file:
+        if arrEmpty:
+            file.write("FALSE")
+        else:
+            file.write("TRUE \n")
+            file.write(f"{len(locArr)} \n")
+            # Pasamos el array a str y lo unimos con ','
+            file.write(f"{ ','.join([str(elem) for elem in locArr]) } \n") 
+
+         
 def kmp(mainString, pattern, prevArr):
 
     # longitudes del patron y el texto en el que buscaremos
@@ -69,13 +99,14 @@ def getPrevArr(pattern, length, prevArr, m):
 
     return prevArr
 
+
 if __name__ == "__main__":
+    # Leemos los archivos de trnasmision y los codigos
+    transmission = readFileToString("files/transmission.txt")
 
-    transmission = "61cea08d3adahp792db2d0b49012f26f1a77d8d759cc4fedadahp997e099ca6abc3ed5c7e64bc4f1adahp1adahpf26f297cca3aadahp5bb5fb0364df26f323f38a20"
-
-    mcode1 = "adahp"
-    mcode2 = "fhfh123"
-    mcode3 = "f26f"
+    mcode1 = readFileToString("files/mcode1.txt")
+    mcode2 = readFileToString("files/mcode2.txt")
+    mcode3 = readFileToString("files/mcode3.txt")
 
     # calculamos el array de prefijos con la funcion getPrevArr
     prevArr = getPrevArr(mcode1, 0, [i for i in range(len(mcode1))], len(mcode1))
@@ -86,6 +117,16 @@ if __name__ == "__main__":
     locArray2 = kmp(transmission, mcode2, prevArr2)
     locArray3 = kmp(transmission, mcode3, prevArr3)
 
-    print(locArray)
-    print(locArray2)
-    print(locArray3)
+    # Escribimos el resultado en los archivos de salida
+    writeResults("results/reporte_mcode1.txt", locArray)
+    writeResults("results/reporte_mcode2.txt", locArray2)
+    writeResults("results/reporte_mcode3.txt", locArray3)
+
+
+#Ejemplo de prueba
+# transmission = "61cea08d3adahp792db2d0b49012f26f1a77d8d759cc4fedadahp997e099ca6abc3ed5c7e64bc4f1adahp1adahpf26f297cca3aadahp5bb5fb0364df26f323f38a20"
+
+# mcode1 = "adahp"
+# mcode2 = "fhfh123"
+# mcode3 = "f26f"
+
