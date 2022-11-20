@@ -41,5 +41,3 @@ def parce(file):
 if __name__ == "__main__":
     matrix = parce("files/example.txt")
     graph = Graph(matrix)
-    
-    print(graph.weight_of(2,1))
