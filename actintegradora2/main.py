@@ -36,26 +36,26 @@ def mst(n_vertices, graph):
             # Ignore if there is no edge
             if graph[i][j] == 0:
                 continue
-            # Add node edge in form => weight: [start node, end node]
-            available_edges[graph[i][j]] = [i, j]
+            # Add node edge in form => [start node, end node]: weight
+            available_edges[(i,j)] = graph[i][j]
 
         # Get min edge from all the available edges
         minimum = 100000000000
+        current_pos = None
         for key in available_edges:
             # Check if the node of the edge is already visited, if so ignore it
-            node_index = available_edges[key][1]
+            node_index = key[1]
             if visited_nodes[node_index]:
                 continue
             # Check if is new min
-            if key < minimum:
-                minimum = key
+            if available_edges[key] < minimum:
+                current_pos = key
+                minimum = available_edges[key]
         
         # If minimum is diferent from infinity
         if minimum != 100000000000:
-            # Store new minimum edge
-            min_edge = available_edges[minimum]
-            results.append([min_edge[0], min_edge[1], minimum])
-            i = min_edge[1] # Process the node of the new edge
+            results.append([current_pos[0], current_pos[1], minimum])
+            i = current_pos[1] # Process the node of the new edge
             
         # Set cur node as visited
         visited_nodes[i] = 1
